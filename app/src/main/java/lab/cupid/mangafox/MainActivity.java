@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private WebView mWebView;
     private ProgressBar mProgress;
 
+    private boolean mExitPending = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
 
             // Display the current progress
             mProgress.setProgress(newProgress);
+
+            // Remove mExitPending status
+            mExitPending = false;
         }
     }
 
@@ -107,8 +112,11 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(mWebView.canGoBack()) {
             mWebView.goBack();
-        } else {
+        } else if(mExitPending) {
             super.onBackPressed();
+        } else {
+            mExitPending = true;
+            Toast.makeText(mContext, getString(R.string.toast_exit_pending), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -123,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.menu_refresh:
                 mWebView.reload();
+                return true;
+            case R.id.menu_home:
+                mWebView.loadUrl(MANGAFOX_URL);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
