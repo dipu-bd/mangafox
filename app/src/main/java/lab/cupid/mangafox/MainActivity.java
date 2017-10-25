@@ -165,11 +165,13 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 ad = mLoadedUrls.get(url);
             }
-
+            // Verbose blocked or passed urls
             Log.v(getClass().getSimpleName(), (ad ? "Blocked" : "Pass") + ": " + Uri.parse(url).getHost());
-
-            return ad ? mAdBlocker.createEmptyResource() :
-                    super.shouldInterceptRequest(view, url);
+            // Return appropriate response
+            if(ad) {
+                return mAdBlocker.createEmptyResource();
+            }
+            return super.shouldInterceptRequest(view, url);
         }
     }
 
