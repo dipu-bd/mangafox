@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String MANGAFOX_URL = "https://m.mangafox.me/";
 
-    private Context mContext;
+    private MainActivity mContext;
+
     private WebView mWebView;
     private ProgressBar mProgress;
 
@@ -52,9 +53,15 @@ public class MainActivity extends AppCompatActivity {
         // The two lines below are to enable interpreting <meta viewport> tag.
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
+        // Enable JavaScript
+        //settings.setJavaScriptEnabled(true);
 
         // Load MangaFox
-        mWebView.loadUrl(MANGAFOX_URL);
+        if (savedInstanceState != null) {
+            mWebView.restoreState(savedInstanceState);
+        } else {
+            mWebView.loadUrl(MANGAFOX_URL);
+        }
     }
 
     /**
@@ -78,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
 
             // Remove mExitPending status
             mExitPending = false;
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            mContext.setTitle(title);
         }
     }
 
@@ -138,5 +151,10 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mWebView.saveState(outState);
     }
 }
