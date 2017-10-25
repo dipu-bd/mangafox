@@ -64,6 +64,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mWebView.saveState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else if(mExitPending) {
+            super.onBackPressed();
+        } else {
+            mExitPending = true;
+            Toast.makeText(mContext, getString(R.string.toast_exit_pending), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_refresh:
+                mWebView.reload();
+                return true;
+            case R.id.menu_home:
+                mWebView.loadUrl(MANGAFOX_URL);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     /**
      * Customized ChromeClient to display progress changes.
      */
@@ -119,42 +157,5 @@ public class MainActivity extends AppCompatActivity {
             String errorDetails = String.valueOf(error.getDescription());
             Toast.makeText(mContext, errorDetails, Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else if(mExitPending) {
-            super.onBackPressed();
-        } else {
-            mExitPending = true;
-            Toast.makeText(mContext, getString(R.string.toast_exit_pending), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.menu_refresh:
-                mWebView.reload();
-                return true;
-            case R.id.menu_home:
-                mWebView.loadUrl(MANGAFOX_URL);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        mWebView.saveState(outState);
     }
 }
