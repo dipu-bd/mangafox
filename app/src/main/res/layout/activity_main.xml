@@ -11,10 +11,11 @@
         android:layout_height="match_parent" />
 
     <ProgressBar
-        style="@android:style/Widget.ProgressBar.Horizontal"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:visibility="gone"
         android:id="@+id/pb_loading"
+        android:layout_gravity="top"
         android:layout_width="match_parent"
-        android:layout_height="8dp" />
+        android:layout_height="3dp" />
 
 </FrameLayout>
