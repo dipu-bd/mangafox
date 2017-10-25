@@ -71,7 +71,8 @@ public final class AdBlocker extends AsyncTask<Void, Void, Void>{
         String line;
         while ((line = bufferedReader.readLine()) != null) {
             line = line.trim();
-            if(TextUtils.isEmpty(line) && COMMENT_CHARS.contains(line[0])) {
+            if(TextUtils.isEmpty(line) &&
+                    COMMENT_CHARS.contains(line.substring(0, 1))) {
                 continue;
             }
             AD_HOSTS.add(line);
