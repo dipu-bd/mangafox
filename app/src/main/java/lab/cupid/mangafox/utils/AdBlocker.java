@@ -25,7 +25,8 @@ public final class AdBlocker extends AsyncTask<Void, Void, Void>{
     private static final String TAG = "AdBlocker";
 
     private static final int[] HOST_RESOURCES = {
-            R.raw.easylist
+            R.raw.easylist,
+            R.raw.easyprivacy,
     };
 
     private final Context mContext;
@@ -39,10 +40,11 @@ public final class AdBlocker extends AsyncTask<Void, Void, Void>{
     @Override
     protected Void doInBackground(Void... params) {
         for (int resId: HOST_RESOURCES) {
+            String resName = mContext.getResources().getResourceName(resId);
             try {
                 loadFromAssets(resId);
+                Log.d(TAG, "Loaded: " + resName);
             } catch (IOException ex) {
-                String resName = mContext.getResources().getResourceName(resId);
                 Log.d(TAG, "Failed to load: " + resName);
             }
         }
