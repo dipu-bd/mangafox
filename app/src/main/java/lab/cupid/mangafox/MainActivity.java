@@ -1,10 +1,13 @@
 package lab.cupid.mangafox;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.http.SslError;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 mProgress.setVisibility(View.VISIBLE);
             } else {
                 mProgress.setVisibility(View.GONE);
+                mWebView.setBackgroundColor(Color.BLACK);
             }
 
             // Display the current progress
@@ -96,6 +100,32 @@ public class MainActivity extends AppCompatActivity {
             // Display toast message describing error details
             String errorDetails = String.valueOf(error.getDescription());
             Toast.makeText(mContext, errorDetails, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_refresh:
+                mWebView.reload();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
