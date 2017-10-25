@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_home:
                 mWebView.loadUrl(MANGAFOX_URL);
+                mWebView.clearHistory();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
