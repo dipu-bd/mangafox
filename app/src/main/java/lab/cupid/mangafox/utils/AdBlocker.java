@@ -1,15 +1,23 @@
 package lab.cupid.mangafox.utils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
+import android.webkit.WebResourceResponse;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,9 +32,11 @@ public final class AdBlocker extends AsyncTask<Void, Void, Void>{
 
     private static final String TAG = "AdBlocker";
 
+    private static final String COMMENT_CHARS = "#!";
     private static final int[] HOST_RESOURCES = {
-            R.raw.easylist,
-            R.raw.easyprivacy,
+            R.raw.customlist,
+            //R.raw.easylist,
+            //R.raw.easyprivacy,
     };
 
     private final Context mContext;
@@ -60,11 +70,37 @@ public final class AdBlocker extends AsyncTask<Void, Void, Void>{
         // Read lines and add to AD_HOSTS
         String line;
         while ((line = bufferedReader.readLine()) != null) {
+            line = line.trim();
+            if(TextUtils.isEmpty(line) && COMMENT_CHARS.contains(line[0])) {
+                continue;
+            }
             AD_HOSTS.add(line);
         }
         // Close streams
         bufferedReader.close();
         inputStreamReader.close();
         inputStream.close();
+    }
+
+    public boolean isAd(String url) {
+        Uri uri = Uri.parse(url);
+        return isAdHost(uri != null ? uri.getHost() : "");
+    }
+
+    private boolean isAdHost(String host) {
+        if (TextUtils.isEmpty(host)) {
+            return false;
+        }
+        int index = host.indexOf(".");
+        if(index >= 0) {
+            return AD_HOSTS.contains(host);
+        } else if(index + 1 < host.length()) {
+            return isAdHost(host.substring(index + 1));
+        }
+        return false;
+    }
+
+    public WebResourceResponse createEmptyResource() {
+        return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream("".getBytes()));
     }
 }
