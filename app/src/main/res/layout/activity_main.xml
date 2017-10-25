@@ -6,15 +6,15 @@
     tools:context="lab.cupid.mangafox.MainActivity">
 
     <WebView
-        android:id="@+id/web_view_main"
+        android:id="@+id/wv_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <ProgressBar
-        android:visibility="invisible"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:visibility="gone"
         android:id="@+id/pb_loading"
-        android:layout_gravity="center"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
 
 </FrameLayout>
