@@ -1,0 +1,16 @@
+#www.google-analytics.com
+cdn.adtrue.com
+sharethis.com
+platform.bidgear.com
+connect.facebook.net
+exchange.adtrue.com
+server.cpmstar.com
+gum.criteo.com
+secure.adnxs.com
+lax1-ib.adnxs.com
+track.adtrue.com
+cfa.2mdnsys.com
+www.googletagmanager.com
+facebook.com
+ads.pubmatic.com
+komoona.com
